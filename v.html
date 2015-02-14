@@ -1,7 +1,7 @@
 <title>Happy Valentines Day!</title>
 <script>
 var so;
-
+var bg="#ff0"
 
 function
 heart(canvas)
@@ -12,15 +12,17 @@ heart(canvas)
 	this.ctx=canvas.getContext("2d");
 	this.xdir=1;
 	this.ydir=1;
+	this.cdtimex=0;
+	this.cdtimey=0;
 	this.swidth=canvas.width;
 	this.sheight=canvas.height;
-	this.speed=30;
+	this.speed=9;
 	this.fg="#f0f"
-	this.bg="#fff"
+	this.bg=bg
 }
 heart.prototype.erase = function (back)
 {
-	this.ctx.translate(this.calcx(back,-1*this.speed,false),this.calcy(back,-1*this.speed,false));
+	this.ctx.translate(this.calcx(back,-1*this.speed,false,true),this.calcy(back,-1*this.speed,false,true));
 	this.ctx.strokeStyle = this.bg
 		for(var i=0; i<10; i++)
 	this.draw();
@@ -41,45 +43,59 @@ heart.prototype.draw= function ()
 	ctx.stroke();
 
 }
-heart.prototype.calcx = function (frames,speed,updatexdir)
+heart.prototype.calcx = function (frames,speed,updatexdir,back)
 {
 	var x=this.x
 	var xdir=this.xdir
+	
 	for(var i=0;i<frames;i++)
 	{
+		if(x>this.swidth || x<0)
+		{
+			xdir=xdir*-1;
+		}
 		x=x+(speed*xdir)
-		if(x>this.swidth)
-			xdir=-1;
-		if(x<0)
-			xdir=1;
 	}
-	if(updatexdir)
+	if(updatexdir){
+		if(this.xdir!=xdir)
+			this.cdtimex=0;
+		else
+			this.cdtimex+=1;
 		this.xdir=xdir;
+	}
 	return x
 }
-heart.prototype.calcy = function (frames,speed,updateydir)
+heart.prototype.calcy = function (frames,speed,updateydir,back)
 {
 	var y=this.y
 	var ydir=this.ydir
+	if(back)
+	{
+		if(frames>this.cdtimey)
+			ydir=ydir*-1
+	}
 	for(var i=0;i<frames;i++)
 	{
+		if(y>this.sheight || y<0)
+			ydir=ydir*-1;
 		y=y+(speed*ydir)
-		if(y>this.sheight)
-			ydir=-1;
-		if(y<0)
-			ydir=1;
 	}
-	if(updateydir)
+	if(updateydir){
+		if(this.ydir!=ydir)
+			this.cdtime=0;
+		else
+			this.cdtimey+=1;
 		this.ydir=ydir;
+	}
 	return y
 }
 heart.prototype.drawframe = function ()
 {
-	this.x=this.calcx(1,this.speed,true);
-	this.y=this.calcy(1,this.speed,true);
+	this.x=this.calcx(1,this.speed,true,false);
+	this.y=this.calcy(1,this.speed,true,false);
 	var ctx=this.ctx
 	ctx.save()
-	this.erase(6);
+	this.erase(30);
 	ctx.restore()
 	//console.log(this.x)
 	var ctx = this.ctx
@@ -95,8 +111,6 @@ draw()
 {	
 	var canvas = document.getElementById("a");
 	var ctx = canvas.getContext("2d");
-//	ctx.fillStyle =  "rgb(0,0,0)";
-//	ctx.fillRect(0,0,ctx.canvas.width ,ctx.canvas.height);
 	ctx.save()
 	ctx.scale(0.5,0.5)
 	so.drawframe()
@@ -109,6 +123,9 @@ main() {
 
 	canvas.width  = window.innerWidth;
 	canvas.height = window.innerHeight;
+	ctx.fillStyle =  "rgb(0,0,0)";
+	ctx.fillRect(0,0,ctx.canvas.width ,ctx.canvas.height);
+
 	so = new heart(canvas);
 	setInterval(draw, 50);
 }
