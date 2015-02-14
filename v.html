@@ -1,0 +1,47 @@
+<title>Happy Valentines Day!</title>
+<script>
+var so;
+
+
+function
+heart(ctx)
+{
+	this.x=10;
+	this.y=10;
+	this.animcounter=0;
+	this.ctx=ctx;
+
+
+}
+heart.prototype.drawframe = function ()
+{
+	console.log(this.x)
+	var ctx = this.ctx
+	ctx.fillStyle = "#0ff"
+	ctx.beginPath();
+	ctx.arc(this.x,this.y,this.x,0,2*Math.PI,true);
+	ctx.fill();//stroke
+}
+function
+draw()
+{	
+	var canvas = document.getElementById("a");
+	var ctx = canvas.getContext("2d");
+	ctx.fillStyle =  "rgb(0,0,0)";
+	ctx.fillRect(0,0,ctx.canvas.width ,ctx.canvas.height);
+	so.drawframe()
+}
+function
+main() {
+	var canvas = document.getElementById("a");
+	var ctx = canvas.getContext("2d");
+
+	so = new heart(ctx);
+	setInterval(draw, 50);
+}
+
+</script>
+
+<body onload="main();">
+<canvas id=a> width=10 hight=10
+</body>
