@@ -13,21 +13,23 @@ heart(canvas)
 	this.xdir=1;
 	this.ydir=1;
 	this.swidth=canvas.width;
-	this.speed=6;
+	this.sheight=canvas.height;
+	this.speed=30;
 	this.fg="#f0f"
-	this.bg="#0ff"
+	this.bg="#fff"
 }
 heart.prototype.erase = function (back)
 {
-	this.ctx.translate(this.calcx(back,-1*this.speed,false),this.y);
+	this.ctx.translate(this.calcx(back,-1*this.speed,false),this.calcy(back,-1*this.speed,false));
 	this.ctx.strokeStyle = this.bg
+		for(var i=0; i<10; i++)
 	this.draw();
 }
 heart.prototype.draw= function ()
 {
 	var ctx = this.ctx
 
-	ctx.lineWidth=0.1;
+	ctx.lineWidth=1;
 	ctx.beginPath();
 	ctx.moveTo(75,40);
 	ctx.bezierCurveTo(75,37,70,25,50,25);
@@ -55,12 +57,29 @@ heart.prototype.calcx = function (frames,speed,updatexdir)
 		this.xdir=xdir;
 	return x
 }
+heart.prototype.calcy = function (frames,speed,updateydir)
+{
+	var y=this.y
+	var ydir=this.ydir
+	for(var i=0;i<frames;i++)
+	{
+		y=y+(speed*ydir)
+		if(y>this.sheight)
+			ydir=-1;
+		if(y<0)
+			ydir=1;
+	}
+	if(updateydir)
+		this.ydir=ydir;
+	return y
+}
 heart.prototype.drawframe = function ()
 {
 	this.x=this.calcx(1,this.speed,true);
+	this.y=this.calcy(1,this.speed,true);
 	var ctx=this.ctx
 	ctx.save()
-	this.erase(10);
+	this.erase(6);
 	ctx.restore()
 	//console.log(this.x)
 	var ctx = this.ctx
@@ -88,8 +107,9 @@ main() {
 	var canvas = document.getElementById("a");
 	var ctx = canvas.getContext("2d");
 
+	canvas.width  = window.innerWidth;
+	canvas.height = window.innerHeight;
 	so = new heart(canvas);
-	so.width=30;
 	setInterval(draw, 50);
 }
 
