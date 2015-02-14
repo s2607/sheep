@@ -29,11 +29,19 @@ wavytext(canvas,text)
 	this.x=canvas.width/2
 	this.y=canvas.height/2
 }
+wavytext.prototype.gety= function (n,x)
+{
+	return Math.sin(n+x%2*Math.PI)
+}
 wavytext.prototype.drawframe = function ()
 {
+	this.counter=this.counter+1
 	this.ctx.translate(this.x,this.y)
 	this.ctx.scale(5,5)
-	this.ctx.strokeText(this.text,10,10)
+	for(i=0;i<this.text.length;i++)
+	{
+	 this.ctx.strokeText(String.fromCharCode(this.text.charCodeAt(i)))
+	}
 }
 heart.prototype.erase = function (back)
 {
