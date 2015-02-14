@@ -1,24 +1,39 @@
 <title>Happy Valentines Day!</title>
 <script>
-var so;
-var bg="#ff0"
+var so = [];
+var bg="#fee"
 
 function
-heart(canvas)
+heart(canvas,fg,x,y,speed)
 {
-	this.x=0.1;
-	this.y=0.1;
+	this.x=x;
+	this.y=y;
 	this.animcounter=0;
 	this.ctx=canvas.getContext("2d");
 	this.xdir=1;
 	this.ydir=1;
 	this.cdtimex=0;
 	this.cdtimey=0;
-	this.swidth=canvas.width;
-	this.sheight=canvas.height;
-	this.speed=9;
-	this.fg="#f0f"
+	this.swidth=canvas.width*2;
+	this.sheight=canvas.height*2;
+	this.speed=speed;
+	this.fg=fg
 	this.bg=bg
+}
+function
+wavytext(canvas,text)
+{
+	this.text=text;
+	this.ctx=canvas.getContext("2d");
+	this.counter=0;
+	this.x=canvas.width/2
+	this.y=canvas.height/2
+}
+wavytext.prototype.drawframe = function ()
+{
+	this.ctx.translate(this.x,this.y)
+	this.ctx.scale(5,5)
+	this.ctx.strokeText(this.text,10,10)
 }
 heart.prototype.erase = function (back)
 {
@@ -113,8 +128,34 @@ draw()
 	var ctx = canvas.getContext("2d");
 	ctx.save()
 	ctx.scale(0.5,0.5)
-	so.drawframe()
+	for(var i=0; i<so.length;i++)
+	{
+		ctx.save()
+		so[i].drawframe()
+		ctx.restore()
+	}
+	//so.drawframe()
 	ctx.restore()
+}
+function
+vcolor(n)
+{
+	c="#"
+	if(n%10<5||(n%3!=0&&n%2!=0))
+		c=c+"f"
+	else
+		c=c+"0"
+	if(n%2!=0&&(n%10<5||n%3!=0))
+		c=c+"f"
+	else
+		c=c+"0"
+	if(n%3!=0)
+		c=c+"f"
+	else
+		c=c+"0"
+	if(c=="#000"&&n%4<2)
+		return "#0ff"
+	return c
 }
 function
 main() {
@@ -123,11 +164,12 @@ main() {
 
 	canvas.width  = window.innerWidth;
 	canvas.height = window.innerHeight;
-	ctx.fillStyle =  "rgb(0,0,0)";
+	ctx.fillStyle =  bg;
 	ctx.fillRect(0,0,ctx.canvas.width ,ctx.canvas.height);
-
-	so = new heart(canvas);
-	setInterval(draw, 50);
+	for(var i=0;i<13;i++)
+		so[i]= new heart(canvas, vcolor(i),i*100%ctx.canvas.width,i*333%ctx.canvas.height,i+1*4)
+	so[13] = new wavytext(canvas,"Happy Valentines Richard!, We miss you. DE KK4SFU")
+	setInterval(draw, 70);
 }
 
 </script>
