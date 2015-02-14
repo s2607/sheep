@@ -4,39 +4,29 @@ var so;
 
 
 function
-heart(ctx)
+heart(canvas)
 {
 	this.x=0.1;
 	this.y=0.1;
 	this.animcounter=0;
-	this.ctx=ctx;
+	this.ctx=canvas.getContext("2d");
 	this.xdir=1;
 	this.ydir=1;
-	this.swidth=30
+	this.swidth=canvas.width;
+	this.speed=1;
+	this.fg="#f0f"
+	this.bg="#0ff"
 }
-heart.prototype.calcx = function (frames,speed,updatexdir)
+heart.prototype.erase = function (back)
 {
-	var x=this.x
-	var xdir=this.xdir
-	for(var i=0;i<frames;i++)
-	{
-		x=x+speed*xdir
-		if(x>this.swidth)
-			xdir=-1;
-		if(x<0)
-			xdir=1;
-	}
-	if(updatexdir)
-		this.xdir=xdir;
-	return x
+	this.ctx.translate(this.calcx(back,-1*this.speed,false),this.y);
+	this.ctx.strokeStyle = this.bg
+	this.draw();
 }
-heart.prototype.drawframe = function ()
+heart.prototype.draw= function ()
 {
-	this.x=this.calcx(1,0.6,true);
-	//console.log(this.x)
 	var ctx = this.ctx
-	ctx.translate(this.x,this.y);
-	ctx.strokeStyle = "#0ff"
+
 	ctx.lineWidth=0.1;
 	ctx.beginPath();
 	ctx.moveTo(75,40);
@@ -49,6 +39,38 @@ heart.prototype.drawframe = function ()
 	ctx.stroke();
 
 }
+heart.prototype.calcx = function (frames,speed,updatexdir)
+{
+	var x=this.x
+	var xdir=this.xdir
+	for(var i=0;i<frames;i++)
+	{
+		x=x+(speed*xdir)
+		if(x>this.swidth)
+			xdir=-1;
+		if(x<0)
+			xdir=1;
+	}
+	if(updatexdir)
+		this.xdir=xdir;
+	return x
+}
+heart.prototype.drawframe = function ()
+{
+	this.x=this.calcx(1,this.speed,true);
+	var ctx=this.ctx
+	ctx.save()
+	this.erase(1);
+	ctx.restore()
+	//console.log(this.x)
+	var ctx = this.ctx
+	ctx.save()
+	ctx.translate(this.x,this.y);
+
+	ctx.strokeStyle = this.fg
+		this.draw()
+	ctx.restore()
+}
 function
 draw()
 {	
@@ -57,6 +79,7 @@ draw()
 //	ctx.fillStyle =  "rgb(0,0,0)";
 //	ctx.fillRect(0,0,ctx.canvas.width ,ctx.canvas.height);
 	ctx.save()
+	ctx.scale(0.5,0.5)
 	so.drawframe()
 	ctx.restore()
 }
@@ -65,12 +88,12 @@ main() {
 	var canvas = document.getElementById("a");
 	var ctx = canvas.getContext("2d");
 
-	so = new heart(ctx);
+	so = new heart(canvas);
+	so.width=30;
 	setInterval(draw, 50);
 }
 
 </script>
 
 <body onload="main();">
-<canvas id=a> width=10 hight=10
-</body>
+<canvas id=a> </body>
