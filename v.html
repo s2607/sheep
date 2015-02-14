@@ -13,7 +13,7 @@ heart(canvas)
 	this.xdir=1;
 	this.ydir=1;
 	this.swidth=canvas.width;
-	this.speed=1;
+	this.speed=6;
 	this.fg="#f0f"
 	this.bg="#0ff"
 }
@@ -60,7 +60,7 @@ heart.prototype.drawframe = function ()
 	this.x=this.calcx(1,this.speed,true);
 	var ctx=this.ctx
 	ctx.save()
-	this.erase(1);
+	this.erase(10);
 	ctx.restore()
 	//console.log(this.x)
 	var ctx = this.ctx
