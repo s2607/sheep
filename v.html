@@ -29,6 +29,8 @@ vcolor(n)
 function
 heart(canvas,fg,x,y,speed)
 {
+	if(y<150)
+		y=151
 	this.x=x;
 	this.y=y;
 	this.animcounter=0;
@@ -50,7 +52,7 @@ wavytext(canvas,text)
 	this.ctx=canvas.getContext("2d");
 	this.counter=0;
 	this.x=canvas.width/2
-	this.y=canvas.height/2
+	this.y=90
 }
 wavytext.prototype.gety= function (n,x)
 {
@@ -138,7 +140,7 @@ heart.prototype.calcy = function (frames,speed,updateydir,back)
 	}
 	for(var i=0;i<frames;i++)
 	{
-		if(y>this.sheight || y<0)
+		if(y>this.sheight|| y<150)
 			ydir=ydir*-1;
 		y=y+(speed*ydir)
 	}
@@ -196,7 +198,7 @@ main() {
 	for(var i=0;i<13;i++)
 		so[i]= new heart(canvas, vcolor(i),i*100%ctx.canvas.width,i*333%ctx.canvas.height,i+1*4)
 	so[13] = new wavytext(canvas,"Happy Valentines Richard!, We miss you. DE KK4SFU")
-	setInterval(draw, 70);
+	setInterval(draw, 100);
 }
 
 </script>
