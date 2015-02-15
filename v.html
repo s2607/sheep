@@ -195,10 +195,11 @@ main() {
 	canvas.height = window.innerHeight;
 	ctx.fillStyle =  bg;
 	ctx.fillRect(0,0,ctx.canvas.width ,ctx.canvas.height);
-	for(var i=0;i<13;i++)
+	var hso=10
+	for(var i=0;i<hso;i++)
 		so[i]= new heart(canvas, vcolor(i),i*100%ctx.canvas.width,i*333%ctx.canvas.height,i+1*4)
-	so[13] = new wavytext(canvas,"Happy Valentines Richard!, We miss you. DE KK4SFU")
-	setInterval(draw, 100);
+	so[hso] = new wavytext(canvas,"Happy Valentines Richard! We miss you. DE KK4SFU")
+	setInterval(draw, 130);
 }
 
 </script>
