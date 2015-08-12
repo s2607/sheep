@@ -1,0 +1,66 @@
+<title>Happy Valentines Day!</title>
+<script>
+var w
+function
+vcolor(n)
+{
+	c="#"
+	if(n%10<5||(n%3!=0&&n%2!=0))
+		c=c+"f"
+	else
+		c=c+"0"
+	if(n%2!=0&&(n%10<5||n%3!=0))
+		c=c+"f"
+	else
+		c=c+"0"
+	if(n%3!=0)
+		c=c+"f"
+	else
+		c=c+"0"
+	if(c=="#000"&&n%4<2)
+		return "#0ff"
+	return c
+}
+function 
+world (cellwidth,ctx)
+{
+	this.cellwidth=cellwidth
+	this.gridwidth=Math.floor(ctx.canvas.width/cellwidth)
+	this.gridheight=Math.floor(ctx.canvas.height/cellwidth)
+}
+world.prototype.draw = function (ctx)
+{
+	var x=0,y=0
+	for(y=0;y<this.gridheight;y++){
+		for(x=0;x<this.gridwidth;x++){
+			ctx.fillStyle=vcolor(x+y);
+			ctx.fillRect(x*this.cellwidth,y*this.cellwidth,x+this.cellwidth,this.cellwidth)
+		}
+	}
+}
+
+function
+draw()
+{	
+	var canvas = document.getElementById("a");
+	var ctx = canvas.getContext("2d");
+	ctx.clearRect(0,0,canvas.width, canvas.height);
+	w.draw(ctx)
+}
+function
+main() {
+	var canvas = document.getElementById("a");
+	var ctx = canvas.getContext("2d");
+
+	canvas.width  = window.innerWidth-20;
+	canvas.height = window.innerHeight-20;
+	ctx.fillStyle =  "#000";
+	ctx.fillRect(0,0,ctx.canvas.width ,ctx.canvas.height);
+	w = new world(5,ctx)
+	setInterval(draw, 130);
+}
+
+</script>
+
+<body onload="main();">
+<canvas id=a> </body>
